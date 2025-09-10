@@ -1,3 +1,4 @@
+const apm = require('elastic-apm-node').start()
 const Fastify = require("fastify");
 const axios = require("axios");
 const mysql = require("mysql2");
