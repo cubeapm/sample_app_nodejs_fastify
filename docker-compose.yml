@@ -8,7 +8,7 @@ services:
       # tell the app that it is running in docker compose
       - CUBE_DOCKER_COMPOSE=true
 
-      - OTEL_SERVICE_NAME=cube_sample_nodejs_express_otel
+      - OTEL_SERVICE_NAME=cube_sample_nodejs_fastify_otel
       - OTEL_EXPORTER_OTLP_COMPRESSION=gzip
       - NODE_OPTIONS=--require ./tracing.js
 

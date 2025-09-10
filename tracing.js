@@ -8,6 +8,7 @@ const {
 const {
   OTLPTraceExporter,
 } = require("@opentelemetry/exporter-trace-otlp-proto");
+const { FastifyOtelInstrumentation } = require('@fastify/otel');
 
 if (process.env.OTEL_LOG_LEVEL === "debug") {
   diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
@@ -23,11 +24,16 @@ const traceExporter =
 
 const sdk = new opentelemetry.NodeSDK({
   traceExporter,
-  instrumentations: getNodeAutoInstrumentations({
-    "@opentelemetry/instrumentation-fs": {
-      enabled: false,
-    },
-  }),
+  instrumentations: [
+    ...Object.values(
+      getNodeAutoInstrumentations({
+        "@opentelemetry/instrumentation-fs": { enabled: false },
+      })
+    ),
+    new FastifyOtelInstrumentation({
+      registerOnInitialization: true,
+    }),
+  ],
 });
 
 // initialize the SDK and register with the OpenTelemetry API

@@ -2,7 +2,6 @@ const Fastify = require("fastify");
 const axios = require("axios");
 const mysql = require("mysql2");
 const redis = require("redis");
-const { FastifyOtelInstrumentation } = require('@fastify/otel');
 
 const start = async () => {
   const app = Fastify({ logger: true });
@@ -25,9 +24,6 @@ const start = async () => {
   await redisClient.connect();
   console.log("redis connected!");
 
-  // --- Register OTEL ---
-  const fastifyOtelInstrumentation = new FastifyOtelInstrumentation();
-  await app.register(fastifyOtelInstrumentation.plugin());
 
   // --- Routes ---
   app.get("/", async () => "Hello");
