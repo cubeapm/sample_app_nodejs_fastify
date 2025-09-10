@@ -41,6 +41,7 @@ const start = async () => {
     });
   }));
 
+  // Elastic apm agent does not support redis 5+ [https://www.elastic.co/docs/reference/apm/agents/nodejs/supported-technologies]
   app.get("/redis", async () => { await redisClient.set("foo", "bar"); return "Redis called"; });
 
   // --- Start server ---
