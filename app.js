@@ -24,7 +24,6 @@ const start = async () => {
   await redisClient.connect();
   console.log("redis connected!");
 
-
   // --- Routes ---
   app.get("/", async () => "Hello");
 
