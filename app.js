@@ -2,6 +2,9 @@ const Fastify = require("fastify");
 const axios = require("axios");
 const mysql = require("mysql2");
 const redis = require("redis");
+const winston = require('winston');
+
+const logger = winston.createLogger();
 
 const start = async () => {
   const app = Fastify({ logger: true });
@@ -25,22 +28,37 @@ const start = async () => {
   console.log("redis connected!");
 
   // --- Routes ---
-  app.get("/", async () => "Hello");
+  app.get("/", async () => {
+    logger.info("root called");
+    return "Hello"
+  });
 
-  app.get("/param/:param", async (req) => `Got param ${req.params.param}`);
+  app.get("/param/:param", async (req) => {
+    logger.info("param api called");
+    return `Got param ${req.params.param}`;
+  });
 
-  app.get("/exception", async () => { throw new Error("Sample exception"); });
+  app.get("/exception", async () => {
+    logger.info("param api called");
+    throw new Error("Sample exception");
+  });
 
-  app.get("/api", async () => { await axios.get("http://localhost:8000/"); return "API called"; });
+  app.get("/api", async () => { 
+    logger.info("api called");
+    await axios.get("http://localhost:8000/"); return "API called"; });
 
   app.get("/mysql", async () => new Promise((resolve, reject) => {
+    logger.info("mysql api called");
     mysqlClient.query("SELECT NOW()", (err, results) => {
       if (err) reject(err);
       else resolve(results[0]["NOW()"]);
     });
   }));
 
-  app.get("/redis", async () => { await redisClient.set("foo", "bar"); return "Redis called"; });
+  app.get("/redis", async () => { 
+    logger.info("redis api called");
+    await redisClient.set("foo", "bar"); return "Redis called"; 
+  });
 
   // --- Start server ---
   const PORT = parseInt(process.env.PORT || "8000");
