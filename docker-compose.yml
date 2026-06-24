@@ -11,6 +11,9 @@ services:
       - NODE_OPTIONS=--require dd-trace/init
       - DD_SERVICE=cube_sample_nodejs_fastify_datadog
 
+      # Send data to Cubeapm using dd-tracer.
+      # - DD_TRACE_AGENT_URL=<cubeapm_endpoint>:3130
+
       # Send data to Datadog Agent
       - DD_AGENT_HOST=datadog-agent
 

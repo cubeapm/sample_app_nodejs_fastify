@@ -1,3 +1,19 @@
+// Code level datadog sdk.
+// require('dd-trace').init({
+//   service: "<app_name>",
+
+//   // Send data to CubeAPM.
+//   url: "<cubeapm_endpoint>:3130",
+
+//   // optional settings
+//   // env: "myenv",
+//   // version: "1.2.3",
+//   // tags: {
+//   //   mykey1: "myvalue1",
+//   //   mykey2: "myvalue2"
+//   // },
+// });
+
 const Fastify = require("fastify");
 const axios = require("axios");
 const mysql = require("mysql2");
@@ -37,7 +53,7 @@ const start = async () => {
   console.log("redis connected!");
 
   // --- Routes ---
-    app.get("/", async () => {
+  app.get("/", async () => {
     logger.info("root called");
     return "Hello"
   });
@@ -52,9 +68,10 @@ const start = async () => {
     throw new Error("Sample exception");
   });
 
-  app.get("/api", async () => { 
+  app.get("/api", async () => {
     logger.info("api called");
-    await axios.get("http://localhost:8000/"); return "API called"; });
+    await axios.get("http://localhost:8000/"); return "API called";
+  });
 
   app.get("/mysql", async () => new Promise((resolve, reject) => {
     logger.info("mysql called");
@@ -64,9 +81,9 @@ const start = async () => {
     });
   }));
 
-  app.get("/redis", async () => { 
+  app.get("/redis", async () => {
     logger.info("redis called");
-    await redisClient.set("foo", "bar"); return "Redis called"; 
+    await redisClient.set("foo", "bar"); return "Redis called";
   });
 
   // --- Start server ---
